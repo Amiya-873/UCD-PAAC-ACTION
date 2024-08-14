@@ -1,0 +1,25 @@
+name: 'Upload a Process into Deploy'
+description: 'Run command to upload a Process into Deploy'
+branding:
+  icon: 'copy'
+  color: 'blue'
+inputs:
+  deployURL:
+    description: 'Deploy URL'
+    required: true
+  username:
+    description: 'username'
+    required: true
+  password:
+    description: 'password'
+    required: true
+  inputFileDirectory:
+    description: 'The directory that has the process json file/files'
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+  pre: |
+    unzip artifacts/pacc-0.1.0.9999999-SNAPSHOT.zip -d artifacts/pacc-0.1.0.9999999-SNAPSHOT
+  post: |
+    rm -rf artifacts/pacc-0.1.0.9999999-SNAPSHOT
