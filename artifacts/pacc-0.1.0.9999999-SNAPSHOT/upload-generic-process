@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Licensed Materials - Property of HCL*
+# (c) Copyright HCL Technologies Ltd. 2020. All Rights Reserved.
+#
+# Note to U.S. Government Users Restricted Rights:
+# Use, duplication or disclosure restricted by GSA ADP Schedule
+# Contract with HCL Technologies Ltd.
+#
+# * Trademark of HCL Technologies Limited
+
+PACC_LOCATION=`dirname "$0"`
+PACC_PROGRAM=`basename "$0"`
+if [ "$PACC_LOCATION" = "." ]; then
+    PACC_LOCATION=`pwd`
+fi
+exec java \
+  "-Dpacc.location=$PACC_LOCATION" \
+  "-Dpacc.program=$PACC_PROGRAM" \
+  -cp "$PACC_LOCATION/lib/pacc-0.1.0.9999999-SNAPSHOT.jar" \
+  ucd.pacc.main.UploadGenericProcessMain \
+  "$@"
