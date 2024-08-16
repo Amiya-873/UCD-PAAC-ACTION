@@ -16,7 +16,6 @@ inputs:
   inputFileDirectory:
     description: 'The directory that has the process json file/files'
     required: true
-
 runs:
   using: 'node20'
   main: 'dist/index.js'
