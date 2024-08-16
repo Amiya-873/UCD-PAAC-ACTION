@@ -115,12 +115,15 @@ runpProcess.stderr.on('data', (data) => {
     }
 });
 
-rl.on('line', (line) => {
-    console.log(line);
-    if (line.includes('password:')) {
-        runpProcess.stdin.write(password + '\n');
-    }
-});
+setTimeout(() => {
+    rl.on('line', (line) => {
+        console.log(line);
+        // If the password prompt appears in stdout, provide the password
+        if (line.includes('password:')) {
+            runProcess.stdin.write(password + '\n');
+        }
+    });
+}, 5000);
 
 runpProcess.on('close', (code) => {
     if (code !== 0) {
