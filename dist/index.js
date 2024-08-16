@@ -88,7 +88,6 @@ var url = process.env.INPUT_DEPLOYURL;
 var user = process.env.INPUT_USERNAME;
 var password = process.env.INPUT_PASSWORD;
 var inputFileDirectory = process.env.INPUT_INPUTFILEDIRECTORY;
-
 var inputFile = path.join(inputFileDirectory, 'myData.json');
 
 var command = createCommand(inputFile);
@@ -100,26 +99,26 @@ if (!command) {
 
 var processArgs = command.split(' ');
 
-var process = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
+var runpPocess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
 
 var rl = readline.createInterface({
-    input: process.stdout,
-    output: process.stdin,
+    input: runpPocess.stdout,
+    output: runpPocess.stdin,
     terminal: false
 });
 
-process.stderr.on('data', (data) => {
+runpPocess.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
 });
 
 rl.on('line', (line) => {
     console.log(line);
     if (line.includes('password:')) {
-        process.stdin.write(password + '\n');
+        runpPocess.stdin.write(password + '\n');
     }
 });
 
-process.on('close', (code) => {
+runpPocess.on('close', (code) => {
     if (code !== 0) {
         console.error(`Process exited with code ${code}`);
     }
