@@ -102,11 +102,14 @@ var processArgs = command.split(' ');
 
 var runpProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
 
-var rl = readline.createInterface({
-    input: runpProcess.stdout,
-    output: runpProcess.stdin,
-    terminal: false
-});
+var rl;
+setTimeout(() => {
+    rl = readline.createInterface({
+        input: runpProcess.stdout,
+        output: runpProcess.stdin,
+        terminal: false
+    });
+}, 5000);
 
 runpProcess.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
@@ -115,15 +118,15 @@ runpProcess.stderr.on('data', (data) => {
     }
 });
 
-setTimeout(() => {
-    rl.on('line', (line) => {
-        console.log(line);
-        // If the password prompt appears in stdout, provide the password
-        if (line.includes('password:')) {
-            runProcess.stdin.write(password + '\n');
-        }
-    });
-}, 5000);
+
+rl.on('line', (line) => {
+    console.log(line);
+    // If the password prompt appears in stdout, provide the password
+    if (line.includes('password:')) {
+        runProcess.stdin.write(password + '\n');
+    }
+});
+
 
 runpProcess.on('close', (code) => {
     if (code !== 0) {
