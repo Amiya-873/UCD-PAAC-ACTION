@@ -23,7 +23,7 @@ if (!command) {
 
 var processArgs = command.split(' ');
 
-var runProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
+var runProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: 'inherit' });
 
 var rl = readline.createInterface({
     input: runProcess.stdout,
