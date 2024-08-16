@@ -18,7 +18,15 @@ inputs:
     required: true
 runs:
   using: 'node20'
-  main: 'dist/index.js'
   steps:
+    - name: Verify file location
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Contents of artifacts directory:"
+        ls -la ./artifacts/pacc-0.1.0.9999999-SNAPSHOT/
+
     - name: Set file permissions
       run: chmod +x ./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-generic-process
+
+    - name: Run the script
+      run: node dist/index.js
