@@ -19,7 +19,3 @@ inputs:
 runs:
   using: 'node20'
   main: 'dist/index.js'
-  pre: |
-    unzip artifacts/pacc-0.1.0.9999999-SNAPSHOT.zip -d artifacts/pacc-0.1.0.9999999-SNAPSHOT
-  post: |
-    rm -rf artifacts/pacc-0.1.0.9999999-SNAPSHOT
