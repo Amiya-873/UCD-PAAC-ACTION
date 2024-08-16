@@ -32,9 +32,12 @@ var rl = readline.createInterface({
     terminal: false
 });
 
-// runpProcess.stderr.on('data', (data) => {
-//     console.error(`stderr: ${data}`);
-// });
+runProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+    if (data.toString().includes('password:')) {
+        runProcess.stdin.write(password + '\n');
+    }
+});
 
 rl.on('line', (line) => {
     console.log(line);
