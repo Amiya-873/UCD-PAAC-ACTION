@@ -83,6 +83,7 @@ const { spawn } = __nccwpck_require__(81);
 const readline = __nccwpck_require__(521);
 const fs = __nccwpck_require__(147);
 const path = __nccwpck_require__(17);
+const { chmodSync } = __nccwpck_require__(147);
 
 var url = process.env.INPUT_DEPLOYURL;
 var user = process.env.INPUT_USERNAME;
@@ -97,28 +98,32 @@ if (!command) {
     process.exit(1);
 }
 
+var commandFilePath = command.split(' ')[0];
+
+grantExecutePermissions(commandFilePath);
+
 var processArgs = command.split(' ');
 
-var runpPocess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
+var runpProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
 
 var rl = readline.createInterface({
-    input: runpPocess.stdout,
-    output: runpPocess.stdin,
+    input: runpProcess.stdout,
+    output: runpProcess.stdin,
     terminal: false
 });
 
-runpPocess.stderr.on('data', (data) => {
+runpProcess.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
 });
 
 rl.on('line', (line) => {
     console.log(line);
     if (line.includes('password:')) {
-        runpPocess.stdin.write(password + '\n');
+        runpProcess.stdin.write(password + '\n');
     }
 });
 
-runpPocess.on('close', (code) => {
+runpProcess.on('close', (code) => {
     if (code !== 0) {
         console.error(`Process exited with code ${code}`);
     }
@@ -144,6 +149,16 @@ function createCommand(inputFilePath) {
     } catch (err) {
         console.error(`Error reading or parsing ${inputFilePath}:`, err);
         return null;
+    }
+}
+
+function grantExecutePermissions(filePath) {
+    try {
+        chmodSync(filePath, '755'); // Grant read, write, and execute permissions to owner, and read and execute permissions to others
+        console.log(`Permissions granted to ${filePath}`);
+    } catch (err) {
+        console.error(`Error granting permissions to ${filePath}:`, err);
+        process.exit(1);
     }
 }
 
