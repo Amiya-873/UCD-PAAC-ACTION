@@ -83,7 +83,6 @@ const { spawn } = __nccwpck_require__(81);
 const readline = __nccwpck_require__(521);
 const fs = __nccwpck_require__(147);
 const path = __nccwpck_require__(17);
-const { chmodSync } = __nccwpck_require__(147);
 
 var url = process.env.INPUT_DEPLOYURL;
 var user = process.env.INPUT_USERNAME;
@@ -109,9 +108,9 @@ var rl = readline.createInterface({
     terminal: false
 });
 
-runpProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-});
+// runpProcess.stderr.on('data', (data) => {
+//     console.error(`stderr: ${data}`);
+// });
 
 rl.on('line', (line) => {
     console.log(line);

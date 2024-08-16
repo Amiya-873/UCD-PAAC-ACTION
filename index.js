@@ -7,7 +7,6 @@ const { spawn } = require('child_process');
 const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
-const { chmodSync } = require('fs');
 
 var url = process.env.INPUT_DEPLOYURL;
 var user = process.env.INPUT_USERNAME;
@@ -33,9 +32,9 @@ var rl = readline.createInterface({
     terminal: false
 });
 
-runpProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-});
+// runpProcess.stderr.on('data', (data) => {
+//     console.error(`stderr: ${data}`);
+// });
 
 rl.on('line', (line) => {
     console.log(line);
