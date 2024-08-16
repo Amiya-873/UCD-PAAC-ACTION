@@ -20,10 +20,3 @@ inputs:
 runs:
   using: 'node20'
   main: 'dist/index.js'
-  steps:
-    - name: Set file permissions
-      shell: bash
-      run: chmod +x ./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-generic-process
-
-    - name: Run the script
-      run: node dist/index.js
