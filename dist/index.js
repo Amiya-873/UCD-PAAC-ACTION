@@ -98,9 +98,6 @@ if (!command) {
     process.exit(1);
 }
 
-var commandFilePath = command.split(' ')[0];
-
-grantExecutePermissions(commandFilePath);
 
 var processArgs = command.split(' ');
 
@@ -136,11 +133,11 @@ function createCommand(inputFilePath) {
         var jsonObject = JSON.parse(data);
 
         if (jsonObject.processType === "generic") {
-            command = `./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-generic-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.processVersion} ${inputFile}`;
+            command = `./ucd-paac-action/artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-generic-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.processVersion} ${inputFile}`;
         } else if (jsonObject.processType === 'application') {
-            command = `./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-application-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.parent} ${inputFile}`;
+            command = `./ucd-paac-action/artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-application-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.parent} ${inputFile}`;
         } else if (jsonObject.processType === 'component') {
-            command = `./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-component-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.parent} ${inputFile}`;
+            command = `./ucd-paac-action/artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-component-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.parent} ${inputFile}`;
         } else {
             throw new Error(`Unknown processType: ${jsonObject.processType}`);
         }
@@ -149,16 +146,6 @@ function createCommand(inputFilePath) {
     } catch (err) {
         console.error(`Error reading or parsing ${inputFilePath}:`, err);
         return null;
-    }
-}
-
-function grantExecutePermissions(filePath) {
-    try {
-        chmodSync(filePath, '755'); // Grant read, write, and execute permissions to owner, and read and execute permissions to others
-        console.log(`Permissions granted to ${filePath}`);
-    } catch (err) {
-        console.error(`Error granting permissions to ${filePath}:`, err);
-        process.exit(1);
     }
 }
 
