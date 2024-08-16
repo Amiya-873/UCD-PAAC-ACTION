@@ -23,14 +23,6 @@ module.exports = require("fs");
 "use strict";
 module.exports = require("path");
 
-/***/ }),
-
-/***/ 521:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("readline");
-
 /***/ })
 
 /******/ 	});
@@ -80,7 +72,6 @@ var __webpack_exports__ = {};
  * Licensed under Apache 2 License.                                           *
  * ========================================================================== */
 const { spawn } = __nccwpck_require__(81);
-const readline = __nccwpck_require__(521);
 const fs = __nccwpck_require__(147);
 const path = __nccwpck_require__(17);
 
@@ -99,14 +90,8 @@ if (!command) {
 
 var processArgs = command.split(' ');
 
+// Execute the process directly
 var runProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: 'inherit' });
-
-var rl = readline.createInterface({
-    input: runProcess.stdout,
-    output: process.stdout,
-    terminal: true
-});
-
 
 runProcess.on('close', (code) => {
     if (code !== 0) {

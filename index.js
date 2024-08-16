@@ -4,7 +4,6 @@
  * Licensed under Apache 2 License.                                           *
  * ========================================================================== */
 const { spawn } = require('child_process');
-const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
 
@@ -23,14 +22,8 @@ if (!command) {
 
 var processArgs = command.split(' ');
 
+// Execute the process directly
 var runProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: 'inherit' });
-
-var rl = readline.createInterface({
-    input: runProcess.stdout,
-    output: process.stdout,
-    terminal: true
-});
-
 
 runProcess.on('close', (code) => {
     if (code !== 0) {
