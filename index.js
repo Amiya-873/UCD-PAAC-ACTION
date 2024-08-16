@@ -31,31 +31,6 @@ var rl = readline.createInterface({
     terminal: true
 });
 
-// Function to sleep for a given number of milliseconds
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-(async () => {
-    // Wait for 5 seconds before processing the line
-    await sleep(5000);
-
-    rl.on('line', (line) => {
-        console.log(line);
-        // If the password prompt appears in stdout, provide the password
-        if (line.includes('password:')) {
-            runProcess.stdin.write(password + '\n');
-        }
-    });
-})();
-
-runProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-    // If the password prompt appears in stderr, provide the password
-    if (data.toString().includes('password:')) {
-        runProcess.stdin.write(password + '\n');
-    }
-});
 
 runProcess.on('close', (code) => {
     if (code !== 0) {
