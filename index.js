@@ -21,40 +21,47 @@ if (!command) {
     process.exit(1);
 }
 
-
 var processArgs = command.split(' ');
 
-var runpProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
+var runProcess = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
 
-var rl;
-setTimeout(() => {
-    rl = readline.createInterface({
-        input: runpProcess.stdout,
-        output: runpProcess.stdin,
-        terminal: false
+var rl = readline.createInterface({
+    input: runProcess.stdout,
+    output: process.stdout,
+    terminal: true
+});
+
+// Function to sleep for a given number of milliseconds
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+(async () => {
+    // Wait for 5 seconds before processing the line
+    await sleep(5000);
+
+    rl.on('line', (line) => {
+        console.log(line);
+        // If the password prompt appears in stdout, provide the password
+        if (line.includes('password:')) {
+            runProcess.stdin.write(password + '\n');
+        }
     });
-}, 5000);
+})();
 
-runpProcess.stderr.on('data', (data) => {
+runProcess.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
+    // If the password prompt appears in stderr, provide the password
     if (data.toString().includes('password:')) {
         runProcess.stdin.write(password + '\n');
     }
 });
 
-
-rl.on('line', (line) => {
-    console.log(line);
-    // If the password prompt appears in stdout, provide the password
-    if (line.includes('password:')) {
-        runProcess.stdin.write(password + '\n');
-    }
-});
-
-
-runpProcess.on('close', (code) => {
+runProcess.on('close', (code) => {
     if (code !== 0) {
         console.error(`Process exited with code ${code}`);
+    } else {
+        console.log("Process completed successfully.");
     }
 });
 
