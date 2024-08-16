@@ -8,25 +8,25 @@ const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
 
-const url = process.env.INPUT_DEPLOYURL;
-const user = process.env.INPUT_USERNAME;
-const password = process.env.INPUT_PASSWORD;
-const inputFileDirectory = process.env.INPUT_INPUTFILEDIRECTORY;
+var url = process.env.INPUT_DEPLOYURL;
+var user = process.env.INPUT_USERNAME;
+var password = process.env.INPUT_PASSWORD;
+var inputFileDirectory = process.env.INPUT_INPUTFILEDIRECTORY;
 
-const inputFile = path.join(inputFileDirectory, 'myData.json');
+var inputFile = path.join(inputFileDirectory, 'myData.json');
 
-const command = createCommand(inputFile);
+var command = createCommand(inputFile);
 
 if (!command) {
     console.error("Failed to create the command. Exiting.");
     process.exit(1);
 }
 
-const processArgs = command.split(' ');
+var processArgs = command.split(' ');
 
-const process = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
+var process = spawn(processArgs[0], processArgs.slice(1), { stdio: ['pipe', 'pipe', 'pipe'] });
 
-const rl = readline.createInterface({
+var rl = readline.createInterface({
     input: process.stdout,
     output: process.stdin,
     terminal: false
@@ -50,10 +50,10 @@ process.on('close', (code) => {
 });
 
 function createCommand(inputFilePath) {
-    let command = '';
+    var command = '';
     try {
-        const data = fs.readFileSync(inputFilePath, 'utf8');
-        const jsonObject = JSON.parse(data);
+        var data = fs.readFileSync(inputFilePath, 'utf8');
+        var jsonObject = JSON.parse(data);
 
         if (jsonObject.processType === "generic") {
             command = `./artifacts/pacc-0.1.0.9999999-SNAPSHOT/upload-generic-process ${user} ${password} ${url} ${jsonObject.processName} ${jsonObject.processVersion} ${inputFile}`;
